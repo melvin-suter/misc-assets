@@ -1,0 +1,37 @@
+table ip default {
+        chain INPUT {
+                type filter hook input priority filter + 1; policy drop;
+                ct state established,related accept
+                meta l4proto { icmp, ipv6-icmp } accept
+                iifname { "lo" } accept
+                tcp dport 22 accept
+                ip saddr __IPSOURCEADDR__ tcp dport 111 accept
+                ip saddr __IPSOURCEADDR__ tcp dport 2049 accept
+                ip saddr __IPSOURCEADDR__ udp dport 111 accept
+                ip saddr __IPSOURCEADDR__ udp dport 2049 accept
+                
+        }
+
+        chain FORWARD {
+                type filter hook forward priority filter + 1; policy drop;
+                ct state established,related accept
+        }
+
+        chain OUTPUT {
+                type filter hook output priority filter + 1; policy accept;
+                __OUTPUT_ACCEPT__
+        }
+
+        chain OUTPUT_NAT {
+                type nat hook output priority filter + 1; policy accept;
+        }
+
+        chain PREROUTING {
+                type nat hook prerouting priority filter + 1; policy accept;
+        }
+
+        chain POSTROUTING {
+                type nat hook postrouting priority filter + 1; policy accept;
+                masquerade
+        }
+}
