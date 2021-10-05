@@ -5,11 +5,8 @@ table ip default {
                 meta l4proto { icmp, ipv6-icmp } accept
                 iifname { "lo" } accept
                 tcp dport 22 accept
-                ip saddr __IPSOURCEADDR__ tcp dport 111 accept
-                ip saddr __IPSOURCEADDR__ tcp dport 2049 accept
-                ip saddr __IPSOURCEADDR__ udp dport 111 accept
-                ip saddr __IPSOURCEADDR__ udp dport 2049 accept
-                
+                ip saddr __IPSOURCEADDR__ tcp dport {2500-3300} accept
+                ip saddr __IPSOURCEADDR__ tcp dport 6162 accept
         }
 
         chain FORWARD {
