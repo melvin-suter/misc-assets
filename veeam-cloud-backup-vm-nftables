@@ -19,7 +19,6 @@ table ip default {
 
         chain OUTPUT {
                 type filter hook output priority filter + 1; policy accept;
-                __OUTPUT_ACCEPT__
         }
 
         chain OUTPUT_NAT {
